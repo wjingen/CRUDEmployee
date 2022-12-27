@@ -1,10 +1,10 @@
 <template>
     <div class="main">
         <v-icon size="100">mdi-account-circle</v-icon>
-        <h1>One account. All of Google.</h1>
-        <h4>Register with Gmail to login</h4>
+        <h1>Employee Registration System</h1>
+        <h4>Create, Read, Update and Delete users.</h4>
         <div class="login">
-            <form ref="form" lazy-validation @submit.prevent="signUp()">
+            <v-form ref="form" lazy-validation @submit.prevent="register()">
                 <v-text-field
                     v-model="name"
                     label="Name"
@@ -17,76 +17,100 @@
                     :rules="emailRules"
                 ></v-text-field>
                 <v-text-field
-                    v-model="password"
-                    label="Password"
+                    v-model="position"
+                    label="Position"
                     required
-                    type="password"
                 ></v-text-field>
+                <v-select
+                    v-model="status"
+                    label="Status"
+                    required
+                    :items="items"
+                ></v-select>
                 <v-btn color="blue" width="400px" type="submit">Sign up</v-btn>
-            </form>
+            </v-form>
         </div>
-        <div class="user-list">
-            <h3>User List</h3>
-            <div style="font-weight: bold">Username Email Password</div>
-            <div class="user-cards">
-                <UserCard
-                    v-for="user in userData"
+        <div class="user-list" v-if="displayTable">
+            <MDBTable striped hover class="align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <User
+                    v-for="user in this.userData"
                     :name="user.name"
                     :email="user.email"
-                    :password="user.password"
+                    :position="user.position"
+                    :status="user.status"
                     :id="user.id"
+                    :key="user.id"
                     @remove="this.delete"
                 />
-            </div>
+            </MDBTable>
         </div>
     </div>
 </template>
 
 <script>
 import UserCard from "./UserCard.vue";
+import User from "./User.vue";
 import { addUser, getAllUserData, deleteUser } from "../firebase.js";
-
+import { MDBTable } from "mdb-vue-ui-kit";
 export default {
     components: {
-        UserCard
+        UserCard,
+        User,
+        MDBTable
     },
     data() {
         return {
             name: "",
             email: "",
-            password: "",
+            position: "",
+            status: "",
             valid: true,
             emailRules: [
                 (v) => !!v || "E-mail is required",
                 (v) => /.+@.+\..+/.test(v) || "E-mail must be valid"
             ],
-            userData: null
+            userData: null,
+            items: ["Working", "On Leave", "Past Employee"],
+            displayTable: false
         };
     },
     async created() {
-        this.userData = await getAllUserData();
+        this.updateUserData();
     },
     methods: {
         validate() {
             this.$refs.form.validate();
         },
-        async signUp() {
-            // this.validate();
-            // e.preventDefault();
-            addUser(this.name, this.email, this.password);
+        async register() {
+            addUser(this.name, this.email, this.position, this.status);
             this.clearFields();
             await this.updateUserData();
         },
         clearFields() {
             this.name = "";
             this.email = "";
-            this.password = "";
+            this.position = "";
+            this.status = "";
         },
         async updateUserData() {
             this.userData = await getAllUserData();
+            if (this.userData.length == 0) {
+                this.displayTable = false;
+            } else {
+                this.displayTable = true;
+            }
         },
         async delete(id) {
-            deleteUser(id);
+            await deleteUser(id);
             await this.updateUserData();
         }
     }
@@ -104,8 +128,7 @@ export default {
 .main .login {
     width: 400px;
 }
-
-.user-cards {
-    justify-content: center;
+.user-list {
+    width: 800px;
 }
 </style>

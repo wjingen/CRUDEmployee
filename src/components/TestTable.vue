@@ -1,33 +1,34 @@
 <template>
-    <v-table :data="users">
-        <thead slot="head">
-            <th>Name</th>
-            <th>Age</th>
-            <th>Email</th>
-            <th>Address</th>
-        </thead>
-        <tbody slot="body" slot-scope="{ displayData }">
-            <tr v-for="row in displayData" :key="row.id">
-                <td>{{ row.name }}</td>
-                <td>{{ row.age }}</td>
-                <td>{{ row.email }}</td>
-                <!-- <td>
-                    {{ row.address.street }},
-                    {{ row.address.city }}
-                    {{ row.address.state }}
-                </td> -->
+    <MDBTable striped hover class="align-middle mb-0 bg-white">
+        <thead class="bg-light">
+            <tr>
+                <th>Name</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Position</th>
+                <th>Actions</th>
             </tr>
+        </thead>
+        <tbody>
+            <TestTableComponent
+                v-for="user in users"
+                :name="user.name"
+                :email="user.email"
+                :title="user.title"
+            />
         </tbody>
-    </v-table>
+    </MDBTable>
 </template>
 
-<script>
-import users from "./users.json";
+<script setup>
+import { MDBTable, MDBBtn, MDBBadge } from "mdb-vue-ui-kit";
+import TestTableComponent from "./TestTableComponent.vue";
 
-export default {
-    name: "TheBasics",
-    data: () => ({
-        users
-    })
-};
+const users = [
+    { name: "James", email: "a@a.com", title: "Worker" },
+    { name: "Jonathan", email: "b@b.com", title: "Officer" },
+    { name: "Frank", email: "c@c.com", title: "Manager" }
+];
 </script>
+
+<style lang="scss" scoped></style>

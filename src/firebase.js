@@ -16,11 +16,12 @@ const db = getFirestore(app);
 const userCollection = collection(db, "users");
 const userRef = doc(userCollection);
 
-export async function addUser(name, email, password) {
+export async function addUser(name, email, position, status) {
 	await addDoc(userCollection, {
 		name: name,
 		email: email,
-		password: password
+		position: position,
+		status: status
 	})
 }
 
@@ -42,3 +43,6 @@ export async function deleteUser(id) {
 		console.error(`Error: no document with ${id} exists`)
 	}
 }
+
+// const data = await getAllUserData();
+// console.log(data)

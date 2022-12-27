@@ -27,9 +27,6 @@ export default {
     },
     methods: {
         delete(id) {
-            // alert(id);
-            // deleteUser(this.id);
-            // console.log("DELETED SUCCESSFULLY");
             this.$emit("remove");
         }
     }
