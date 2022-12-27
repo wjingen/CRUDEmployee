@@ -13,7 +13,6 @@
                 <v-text-field
                     v-model="email"
                     label="Email"
-                    required
                     :rules="emailRules"
                 ></v-text-field>
                 <v-text-field
@@ -50,6 +49,7 @@
                     :id="user.id"
                     :key="user.id"
                     @remove="this.delete"
+                    @edit="this.update"
                 />
             </MDBTable>
         </div>
@@ -59,7 +59,12 @@
 <script>
 import UserCard from "./UserCard.vue";
 import User from "./User.vue";
-import { addUser, getAllUserData, deleteUser } from "../firebase.js";
+import {
+    addUser,
+    getAllUserData,
+    deleteUser,
+    updateUser
+} from "../firebase.js";
 import { MDBTable } from "mdb-vue-ui-kit";
 export default {
     components: {
@@ -87,9 +92,6 @@ export default {
         this.updateUserData();
     },
     methods: {
-        validate() {
-            this.$refs.form.validate();
-        },
         async register() {
             addUser(this.name, this.email, this.position, this.status);
             this.clearFields();
@@ -111,6 +113,17 @@ export default {
         },
         async delete(id) {
             await deleteUser(id);
+            await this.updateUserData();
+        },
+        async update(id) {
+            console.log("update!");
+            console.log(id);
+            await updateUser(id, {
+                name: "Jing En",
+                email: "aof",
+                position: "asnf",
+                status: "Not working"
+            });
             await this.updateUserData();
         }
     }

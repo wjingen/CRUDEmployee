@@ -18,9 +18,22 @@
             }}</MDBBadge>
         </td>
         <td>
-            <!-- <MDBBtn color="link" size="sm" rounded> Edit </MDBBtn> -->
-            <!-- {{ this.id }} -->
-            <v-btn @click="$emit('remove', this.id)"> Delete </v-btn>
+            <MDBBtn
+                color="link"
+                size="sm"
+                rounded
+                @click="$emit('remove', this.id)"
+            >
+                Delete
+            </MDBBtn>
+            <MDBBtn
+                color="link"
+                size="sm"
+                rounded
+                @click="$emit('edit', this.id)"
+            >
+                Edit
+            </MDBBtn>
         </td>
     </tr>
 </template>
@@ -32,7 +45,7 @@ export default {
         return {
             imageUrl:
                 "https://avatars.dicebear.com/api/adventurer/" +
-                this.name +
+                this.id +
                 ".svg"
         };
     },
@@ -54,12 +67,8 @@ export default {
             };
         }
     },
-    mounted() {
-        console.log(this.imageUrl);
-        console.log(this.name);
-    },
     components: { MDBBadge, MDBBtn },
-    emits: ["remove"],
-    props: ["name", "email", "title", "department", "status", "position", "id"]
+    emits: ["remove", "edit"],
+    props: ["name", "email", "position", "status", "id"]
 };
 </script>

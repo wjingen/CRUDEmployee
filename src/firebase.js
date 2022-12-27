@@ -1,5 +1,5 @@
 import { initializeApp  } from 'firebase/app'
-import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, getDocs, setDoc } from 'firebase/firestore';
+import { getFirestore, collection, doc, addDoc, getDoc, deleteDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
 	apiKey: "AIzaSyAfGjS8wfs2vBWkBEq_Jf0mk0jX50K09G4",
@@ -43,6 +43,25 @@ export async function deleteUser(id) {
 		console.error(`Error: no document with ${id} exists`)
 	}
 }
+
+export async function updateUser(id, fields) {
+	try {
+		await updateDoc(doc(db, "users", id), {
+			name: fields["name"],
+			email: fields["email"],
+			position: fields["position"],
+			status: fields["status"]
+		})
+	} catch (e) {
+		console.error(`Error: no document with ${id} exists`)
+	}
+}
+
+updateUser("TpKmAvu7SdE1ReFZ1GAC",{"name":"Jing En", "email": "aof", "position": "asnf", "status": "Not working"})
+
+// const reff = doc(db, "users", "TpKmAvu7SdE1ReFZ1GAC")
+// console.log(reff)
+
 
 // const data = await getAllUserData();
 // console.log(data)
