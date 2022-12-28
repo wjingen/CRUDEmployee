@@ -57,11 +57,6 @@ export async function updateUser(id, fields) {
 	}
 }
 
-updateUser("TpKmAvu7SdE1ReFZ1GAC",{"name":"Jing En", "email": "aof", "position": "asnf", "status": "Not working"})
-
-// const reff = doc(db, "users", "TpKmAvu7SdE1ReFZ1GAC")
-// console.log(reff)
-
 
 // const data = await getAllUserData();
 // console.log(data)

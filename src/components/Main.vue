@@ -4,7 +4,7 @@
         <h1>Employee Registration System</h1>
         <h4>Create, Read, Update and Delete users.</h4>
         <div class="login">
-            <v-form ref="form" lazy-validation @submit.prevent="register()">
+            <form ref="form" lazy-validation @submit.prevent="register()">
                 <v-text-field
                     v-model="name"
                     label="Name"
@@ -27,7 +27,7 @@
                     :items="items"
                 ></v-select>
                 <v-btn color="blue" width="400px" type="submit">Sign up</v-btn>
-            </v-form>
+            </form>
         </div>
         <div class="user-list" v-if="displayTable">
             <MDBTable striped hover class="align-middle mb-0 bg-white">
@@ -57,7 +57,6 @@
 </template>
 
 <script>
-import UserCard from "./UserCard.vue";
 import User from "./User.vue";
 import {
     addUser,
@@ -68,7 +67,6 @@ import {
 import { MDBTable } from "mdb-vue-ui-kit";
 export default {
     components: {
-        UserCard,
         User,
         MDBTable
     },
@@ -115,14 +113,12 @@ export default {
             await deleteUser(id);
             await this.updateUserData();
         },
-        async update(id) {
-            console.log("update!");
-            console.log(id);
+        async update(id, newName, newEmail, newPosition, newStatus) {
             await updateUser(id, {
-                name: "Jing En",
-                email: "aof",
-                position: "asnf",
-                status: "Not working"
+                name: newName,
+                email: newEmail,
+                position: newPosition,
+                status: newStatus
             });
             await this.updateUserData();
         }

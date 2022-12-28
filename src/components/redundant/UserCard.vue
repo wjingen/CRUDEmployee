@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { deleteUser } from "../firebase.js";
+import { deleteUser } from "../../firebase.js";
 
 export default {
     props: ["name", "email", "password", "id"],
